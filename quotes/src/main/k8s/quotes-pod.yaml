@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quotes
+spec:
+  containers:
+  - name: quotes
+    image: registry:5000/quotes:1
+    ports:
+    - containerPort: 9090
+      hostPort: 9090
