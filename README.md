@@ -31,7 +31,7 @@ Add the following line to /etc/hosts:
 `registry	   192.168.64.1`
 us
 #### Register registry host on CoreOS cluster
- * Add the following lines to the `write-files` block ~/kube-cluster/cloud-init/user-data.node1 and user-data.node2 respectively, either by editing them or by replacing them with the files ./cloud-init:
+ * Add the following lines to the `write-files` block to ~/kube-cluster/cloud-init/user-data.node1 and user-data.node2 respectively, either by editing them or by replacing them with the files ./cloud-init:
 
 ~~~yaml
      - path: /etc/hosts
@@ -65,9 +65,33 @@ EXTRA_ARGS='
 Then restart your docker-machine:
 `docker-machine restart default`
 
+### Tweak some Kubernetes properties
+Kubernetes provides several configuration options. In a CoreOS-based cluster, Kubernetes is configured using CoreOS [fleet](https://coreos.com/fleet/) units. The fleet units are found in ~/kube-cluster/fleet/.
+
+ * Configure the allowed external port range for services by adding the following line to ~/kube-cluster/fleet/kube-apiserver.service , either by editing it or by replacing it with the file in ./fleet:
+
+~~~yaml
+[Service]
+ ... 
+ --service-node-port-range=30000-39999 \
+ ...
+~~~
+
+* Configure the eviction timeout for pods and nodes by adding the following lines to ~/kube-cluster/fleet/kube-controller-manager.service , either by editing it or by replacing it with the file in ./fleet:
+
+~~~yaml
+[Service]
+ ... 
+ --node-monitor-grace-period=10s \
+ --pod_eviction_timeout=10s \
+ ...
+~~~
+
+ * From the CoreOS-Kluster app menu, choose Reload
+
 ## Step 0 - Verify the cluster
 
- * The quotes folder contains a the backend application, which can deliver quotes on a rest endpoint. Build and run the application.
+ * You now have an empty cluster with two working nodes configured, as shown by the commands below.
 
 `kubectl get nodes` 
 
