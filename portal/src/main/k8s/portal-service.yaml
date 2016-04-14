@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: portal-service
+  labels:
+    app: portal
+    version: "1"
+    tier: frontend
+spec:
+  type: NodePort
+  selector:
+    app: portal
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 38080
