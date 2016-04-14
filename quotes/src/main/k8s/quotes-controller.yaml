@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: quotes
+  labels:
+    app: quotes
+    version: "1"
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    app: quotes
+    version: "1"
+  template:
+    metadata:
+      labels:
+        app: quotes
+        version: "1"
+        tier: backend
+    spec:
+      containers:
+      - name: quotes
+        image: registry:5000/quotes:1
+        ports:
+        - name: http
+          containerPort: 9090
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 9090
+          initialDelaySeconds: 10
+          timeoutSeconds: 1

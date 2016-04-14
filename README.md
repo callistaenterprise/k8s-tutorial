@@ -140,7 +140,7 @@ Then restart your docker-machine:
 
  * Scale the replication controller back to 2 instances.
 
-`kubectl scale rc quotes --replicas=4`
+`kubectl scale rc quotes --replicas=2`
 
 `kubectl get pods`
 
