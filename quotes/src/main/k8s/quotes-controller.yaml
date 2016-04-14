@@ -1,26 +1,26 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: quotes
+  name: quotes-v2
   labels:
     app: quotes
-    version: "1"
+    version: "2"
     tier: backend
 spec:
   replicas: 2
   selector:
     app: quotes
-    version: "1"
+    version: "2"
   template:
     metadata:
       labels:
         app: quotes
-        version: "1"
+        version: "2"
         tier: backend
     spec:
       containers:
       - name: quotes
-        image: registry:5000/quotes:1
+        image: registry:5000/quotes:2
         ports:
         - name: http
           containerPort: 9090

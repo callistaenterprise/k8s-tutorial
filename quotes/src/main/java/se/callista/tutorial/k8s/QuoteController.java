@@ -1,7 +1,9 @@
 package se.callista.tutorial.k8s;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.commons.logging.Log;
@@ -16,17 +18,20 @@ public class QuoteController {
 
     private static final Log LOG = LogFactory.getLog(QuoteController.class);
     
-	List<String> quotes;
+    Map<String, List<String>> quotes;
 	Random random = new Random();
 	
 	public QuoteController() {
-		quotes = Arrays.<String>asList("To be or not to be", "You, too, Brutus?", "Champagne should be cold, dry and free");
+        quotes = new HashMap<>();
+        quotes.put("en", Arrays.<String>asList("To be or not to be", "You, too, Brutus?", "Champagne should be cold, dry and free"));
+        quotes.put("sv", Arrays.<String>asList("Att vara eller inte vara", "Även du, min Brutus?", "Champagne skall vara kall, torr och gratis"));
 	}
     
     @RequestMapping("/quote")
     public Quote quote(@RequestParam(value="language", defaultValue="en") String language) {
         if (QuotesHealthIndicator.isAlive) {
-            String s = quotes.get(random.nextInt(quotes.size()));
+            List<String> list = quotes.get(language);
+            String s = list.get(random.nextInt(list.size()));
             Quote quote = new Quote();
             quote.setQuote(s);
             quote.setLanguage(language);
