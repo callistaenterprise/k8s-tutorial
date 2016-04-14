@@ -1,11 +1,11 @@
 # k8s-tutorial
 
-This is a mini-tutorial on setting up and using Kubernetes on a CoreOS cluster on OSX.
+This is a mini-tutorial on setting up and using [Kubernetes](http://kubernetes.io) on a [CoreOS](https://coreos.com/) cluster on OSX.
 
 ## Setup
 
 ### CoreOS Kubernetes cluster
-The Kube-Cluster OSX app provides a convenient way to set up a Kubernetes cluster based on CoreOS nodes running natively on OSX using xhyve.
+The Kube-Cluster OSX app provides a convenient way to set up a Kubernetes cluster based on CoreOS nodes running natively on OSX using [xhyve](www.xhyve.org).
 
  * Download the Kube-Cluster app from https://github.com/TheNewNormal/kube-cluster-osx, and copy the app to a convenient location (e.g. /Applications).
  * When starting the application, a dialog opens to offer initial setup of a CoreOS cluster.
