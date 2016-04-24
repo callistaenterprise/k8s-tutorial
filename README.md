@@ -26,12 +26,21 @@ In order to minimize network problems with pushing/pulling docker images to the 
  * Start the application, and choose Up from the menu.
  * Your private docker registry is now started on 192.168.64.1:5000
 
-#### Register registry host on OSX
-Add the following line to /etc/hosts:
-`registry	   192.168.64.1`
-us
-#### Register registry host on CoreOS cluster
- * Add the following lines to the `write-files` block to ~/kube-cluster/cloud-init/user-data.node1 and user-data.node2 respectively, either by editing them or by replacing them with the files ./cloud-init:
+#### Register registry host on CoreOS node
+ * Add the following lines to the `write-files` block at the end of the file ~/coreos-osx/cloud-init/user-data, either by editing it or by replacing it with the corresponding file in ./cloud-init:
+
+~~~yaml
+     - path: /etc/hosts
+       permissions: '0644'
+       content: |
+          127.0.0.1 core-01
+          192.168.64.1 registry
+~~~
+
+ * From the CoreOS app menu, choose Reload
+
+#### Register registry host on Kubernetes cluster
+ * Add the following lines to the `write-files` block at the end of the files ~/kube-cluster/cloud-init/user-data.node1 and user-data.node2 respectively, either by editing them or by replacing them with the corresponding files in ./cloud-init:
 
 ~~~yaml
      - path: /etc/hosts
@@ -48,22 +57,7 @@ us
           192.168.64.1 registry
 ~~~
 
- * From the CoreOS-Kluster app menu, choose Reload
-
-### Allow insecure registry when pushing docker images
- * ssh to your docker-machine, and edit /var/lib/boot2docker/profile to include --insecure-registry:
-
-`docker-machine ssh default`
-`sudo vi /var/lib/boot2docker/profile`
-`
-EXTRA_ARGS='
-...
---insecure-registry="registry:5000"
-...
-'
-`
-Then restart your docker-machine:
-`docker-machine restart default`
+ * From the Kube-Kluster app menu, choose Reload
 
 ### Tweak some Kubernetes properties
 Kubernetes provides several configuration options. In a CoreOS-based cluster, Kubernetes is configured using CoreOS [fleet](https://coreos.com/fleet/) units. The fleet units are found in ~/kube-cluster/fleet/.
@@ -87,11 +81,13 @@ Kubernetes provides several configuration options. In a CoreOS-based cluster, Ku
  ...
 ~~~
 
- * From the CoreOS-Kluster app menu, choose Reload
+ * From the Kube-Kluster app menu, choose 'Reload'
 
 ## Step 0 - Verify the cluster
 
- * You now have an empty cluster with two working nodes configured, as shown by the commands below.
+You now have an empty cluster with two working nodes configured, as shown by the commands below.
+
+* From the Kube-Kluster app menu, choose 'Preset OS shell' to open a shell terminal window with pre-initialized env variables, then run the commands 
 
 `kubectl get nodes` 
 
@@ -100,7 +96,9 @@ Kubernetes provides several configuration options. In a CoreOS-based cluster, Ku
 ## Step 1 - Building and deploying a pod
 `git co step1`
 
- * The quotes folder contains a the backend application, which can deliver quotes on a rest endpoint. Build and run the application.
+The quotes folder contains a the backend application, which can deliver quotes on a rest endpoint. Build and run the application.
+
+ * From the CoreOS app menu, choose 'Preset OS shell' to open a shell terminal window with pre-initialized env variables for docker, then run the commands 
  
 `cd quotes`
 
@@ -126,7 +124,7 @@ Kubernetes provides several configuration options. In a CoreOS-based cluster, Ku
 
 `mvn docker:push`
 
- * Now create a kubernetes pod, based on the docker image.
+ * Now create a kubernetes pod, based on the docker image. In the Kube-Cluster shell window, issue the following command:
 
 `kubectl create -f src/main/k8s/quotes-pod.yaml`
 
@@ -137,7 +135,7 @@ Kubernetes provides several configuration options. In a CoreOS-based cluster, Ku
 `kubectl describe pod quotes`
 
  * Note the IP address of the pod, which is only visible inside the cluster.
- * SSH into the node which runs the pod, using the CoreOS-Kluster app menu, and target the pod rest endpoint:
+ * SSH into the node which runs the pod, using the Kube-Kluster app menu, and target the pod rest endpoint:
 
 `curl <IP.address.of.pod>:9090/quote`
 
@@ -203,7 +201,7 @@ The quotes replication controller defines an http-based liveness probe to allow 
  
  `kubectl describe service quotes-service`
  
-* SSH into one of the worker nodes, using the CoreOS-Kluster app menu, and target the service rest endpoint:
+* SSH into one of the worker nodes, using the Kube-Kluster app menu, and target the service rest endpoint:
 
 `curl <IP.address.of.service>:9090/quote`
 
@@ -227,7 +225,7 @@ The quotes replication controller defines an http-based liveness probe to allow 
 
 The portal folder contains the frontend application, which renders a portal for the quotes. It uses the quotes-service, as if it was a physical host.
 
- * Build the frontend docker image, and push to the repository.
+ * Build the frontend docker image, and push to the repository. Run the following commands in the CoreOS shell window:
 
 `cd portal`
 
@@ -237,7 +235,7 @@ The portal folder contains the frontend application, which renders a portal for 
 
 `mvn docker:push`
 
-* Create a service and replication controller for the portal application.
+* Create a service and replication controller for the portal application. Run the following commands in the Kube-Cluster shell window:
 
 `kubectl create -f src/main/k8s/portal-service.yaml`
 
@@ -251,7 +249,7 @@ The portal folder contains the frontend application, which renders a portal for 
 
 `git co step6`
 
-* A new version of the backend quotes application is available, which delivers localized quotes, based on requested locale. Build and push the new docker image to the registry.
+* A new version of the backend quotes application is available, which delivers localized quotes, based on requested locale. Build and push the new docker image to the registry, by running the following commands in the CoreOS shell window:
 
 `cd quotes`
 
@@ -267,7 +265,7 @@ The portal folder contains the frontend application, which renders a portal for 
 
 `./get-portal-home.sh`
 
-* Perform a rolling upgrade of the quotes pods, which gradually replaces the old version instances of the pods with new version instances, without interrupting the quotes-service, and hence not affecting the portal home page.
+* Perform a rolling upgrade of the quotes pods, which gradually replaces the old version instances of the pods with new version instances, without interrupting the quotes-service, and hence not affecting the portal home page. Run the following commands in the Kube-Cluster command window:
 
 `cd quotes`
 
