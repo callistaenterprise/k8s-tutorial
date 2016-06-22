@@ -18,6 +18,11 @@ The Kube-Cluster OSX app provides a convenient way to set up a Kubernetes cluste
  * Choose Update | OS X fleetctl and helm clients.
  * Optionally, choose Update | Update Kubernetes to latest stable version. 
 
+**NOTES**
+
+1. Verified to work with v0.2.9
+1. If setup fails and you are using VirtualBox, try to restart the Mac and retry the setup without starting VirtualBox.
+1. Previous setups can be removed by deleting the folder `~/kube-cluster`
 
 ### Private docker registry
 In order to minimize network problems with pushing/pulling docker images to the Kubernetes cluster, a private docker registry is used. The CoreOS OSX app provides a convenient way to run a private docker registry, which is accessible from the CoreOS cluster.
