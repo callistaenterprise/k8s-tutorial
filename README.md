@@ -45,7 +45,7 @@ In order to minimize network problems with pushing/pulling docker images to the 
  * From the CoreOS app menu, choose Reload
 
 #### Register registry host on Kubernetes cluster
- * Add the following lines to the `write-files` block at the end of the files ~/kube-cluster/cloud-init/user-data.node1 and user-data.node2 respectively, either by editing them or by replacing them with the corresponding files in ./cloud-init:
+ * Add the following lines to the `write_files` block at the end of the files ~/kube-cluster/cloud-init/user-data.node1 and user-data.node2 respectively, either by editing them or by replacing them with the corresponding files in ./cloud-init:
 
 ~~~yaml
      - path: /etc/hosts
