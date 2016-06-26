@@ -117,6 +117,8 @@ The quotes folder contains a the backend application, which can deliver quotes o
 
  * Build and run the docker image locally.
 
+`eval $(docker-machine env default)`
+
 `mvn docker:build`
 
 `docker run --rm -p 9090:9090 registry:5000/quotes:1`
