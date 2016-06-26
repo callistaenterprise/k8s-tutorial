@@ -125,7 +125,7 @@ The quotes folder contains a the backend application, which can deliver quotes o
 
  * Then query the docker image rest endpoint for a quote, in a separate console.
 
-`curl <docker-machine>:9090/quote`
+`curl $(docker-machine ip default):9090/quote`
 
  * Push the docker image to the private registry.
 
