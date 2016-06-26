@@ -99,7 +99,7 @@ You now have an empty cluster with two working nodes configured, as shown by the
 `kubectl get pods` 
 
 ## Step 1 - Building and deploying a pod
-`git co step1`
+`git checkout step1`
 
 The quotes folder contains a the backend application, which can deliver quotes on a rest endpoint. Build and run the application.
 
@@ -151,7 +151,7 @@ The quotes folder contains a the backend application, which can deliver quotes o
 
 ## Step 2 - Deploying multiple instances of a pod, using a ReplicationController
 
-`git co step2`
+`git checkout step2`
 
  * Create a replication controller for the quotes pod.
 
@@ -194,11 +194,11 @@ The quotes replication controller defines an http-based liveness probe to allow 
 
 ## Step 4 - Services
 
-`git co step4`
+`git checkout step4`
 
 * Create a service as a logical access point for the quotes pod.
 
-`git co step2`
+`git checkout step2`
 
 `kubectl create -f src/main/k8s/quotes-service.yaml`
 
@@ -226,7 +226,7 @@ The quotes replication controller defines an http-based liveness probe to allow 
 
 ## Step 5 - Adding a frontend, which uses the backend service
 
-`git co step5`
+`git checkout step5`
 
 The portal folder contains the frontend application, which renders a portal for the quotes. It uses the quotes-service, as if it was a physical host.
 
@@ -252,7 +252,7 @@ The portal folder contains the frontend application, which renders a portal for 
 
 ## Step 6 - Rolling upgrade
 
-`git co step6`
+`git checkout step6`
 
 * A new version of the backend quotes application is available, which delivers localized quotes, based on requested locale. Build and push the new docker image to the registry, by running the following commands in the CoreOS shell window:
 
