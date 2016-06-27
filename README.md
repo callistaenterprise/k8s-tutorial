@@ -88,20 +88,6 @@ Kubernetes provides several configuration options. In a CoreOS-based cluster, Ku
 
  * From the Kube-Kluster app menu, choose 'Reload'
 
-### Local environment
-
-To be able to build Docker images locally ensure that you have a local Docker Engine running, assuming named ´default´:
-
-`docker-machine start default`
-
-Setup environement variables in your temrninal:
-
-`eval $(docker-machine env default)`
-
-To be able to push Docker images to the private docker registry add an entry in your local `/etc/hosts` file:
-
-`192.168.64.1 registry`
-
 ## Step 0 - Verify the cluster
 
 You now have an empty cluster with two working nodes configured, as shown by the commands below.
@@ -137,7 +123,7 @@ The quotes folder contains a the backend application, which can deliver quotes o
 
  * Then query the docker image rest endpoint for a quote, in a separate console.
 
-`curl $(docker-machine ip default):9090/quote`
+`curl <docker-machine>:9090/quote`
 
  * Push the docker image to the private registry.
 
